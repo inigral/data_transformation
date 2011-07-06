@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
 	s.platform   	= Gem::Platform::RUBY
   s.authors     = ["Chris Barton"]
   s.email       = ["cbarton@inigral.com"]
-  s.homepage    = ""
+  s.homepage    = "https://cbarton@github.com/inigral/data_transformation.git"
   s.summary     = "Rails 3 Data Transformations"
   s.description = "To keep the necessity of changing data out of migrations, transformations keep track of that"
 

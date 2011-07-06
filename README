@@ -1,0 +1,7 @@
+== Using the Migrator
+	= It's just like migrating, moreso than you probably originally thought.
+
+rails g data_transformation transform_name = make the transform
+
+rake db:transform  = run the unrun transforms
+
