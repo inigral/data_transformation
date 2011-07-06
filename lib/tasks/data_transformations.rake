@@ -1,8 +1,4 @@
 namespace :db do
-	task :load_config => :rails_env do
-		DataTransformation::Transformer.migration_paths = Rails.application.paths['db/transforms'].to_a
-	end
-
 	desc "Transform the database (options: VERSION=x, VERBOSE=false)."
 	task :transform => :environment do
 		module ActiveRecord
