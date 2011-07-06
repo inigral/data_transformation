@@ -1,4 +1,6 @@
-re "data_transformation/version"
+# -*- encoding: utf-8 -*-
+$:.push File.expand_path("../lib", __FILE__)
+require "data_transformation/version"
 
 Gem::Specification.new do |s|
   s.name        = "data_transformation"
