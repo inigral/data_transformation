@@ -2,7 +2,7 @@ require 'rails/generators'
 require 'rails/generators/active_record'
 require 'fileutils'
 
-class DataTransformationGenerator < Rails::Generators::NamedBase
+class TransformGenerator < Rails::Generators::NamedBase
 	include Rails::Generators::Migration
 
   def self.source_root

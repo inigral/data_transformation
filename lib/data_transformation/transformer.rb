@@ -27,11 +27,10 @@ module DataTransformation
 			def rollback
 				raise "Unimplemented as a Transformation"
 			end
-		end
 
-
-		def schema_migrations_table_name
-			ActiveRecord::Base.table_name_prefix + "schema_transforms" + ActiveRecord::Base.table_name_suffix
+			def schema_migrations_table_name
+				ActiveRecord::Base.table_name_prefix + "schema_transforms" + ActiveRecord::Base.table_name_suffix
+			end
 		end
 	end	
 end
