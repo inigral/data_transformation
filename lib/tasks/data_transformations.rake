@@ -1,3 +1,4 @@
+require 'active_record/connection_adapters/abstract_adapter'
 desc "Hacks in the transform to migrations"
 task :hack_in_ar do
   class << ActiveRecord::Migrator
