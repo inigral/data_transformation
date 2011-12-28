@@ -37,42 +37,42 @@ end
 desc "Undoes the hack in Active Record for the migrations"
 task :undo_hack_in_ar do
   class << ActiveRecord::Migrator
-    alias_method :schema_migrations_table_name, :original_schema_migrations_table_name 
+    alias_method :schema_migrations_table_name, :original_schema_migrations_table_name
   end
 
   ActiveRecord::ConnectionAdapters::SchemaStatements.module_eval do
-    alias_method :initialize_schema_migrations_table, :original_initialize_schema_migrations_table 
+    alias_method :initialize_schema_migrations_table, :original_initialize_schema_migrations_table
   end
 end
 
 namespace :db do
-	desc "Transform the database (options: VERSION=x, VERBOSE=false)."
-	task :transform => [:environment, :hack_in_ar] do
-		DataTransformation::Transformation.verbose = ENV['VERBOSE'] ? ENV['VERBOSE'] == "true" : true
-		DataTransformation::Transformer.transform('db/transforms/', ENV['VERSION'] ? ENV['VERSION'].to_i : nil)
-		Rake::Task["db:transform:dump"].invoke
-	end
+  desc "Transform the database (options: VERSION=x, VERBOSE=false)."
+  task :transform => [:environment, :hack_in_ar] do
+    DataTransformation::Transformation.verbose = ENV['VERBOSE'] ? ENV['VERBOSE'] == "true" : true
+    DataTransformation::Transformer.transform('db/transforms/', ENV['VERSION'] ? ENV['VERSION'].to_i : nil)
+    Rake::Task["db:transform:dump"].invoke
+  end
 
-	namespace :transform do
-		desc "Dump the Transform schema."
-		task :dump => [:environment, :hack_in_ar] do
-			filename = ENV['SCHEMA'] || "#{Rails.root}/db/transform_schema.rb"
-			File.open(filename, 'w') do |f|
-				version = DataTransformation::Transformer::current_version rescue nil
-				f.puts "DataTransformation::Schema.define(:version => #{version})"
-			end
-			Rake::Task['undo_hack_in_ar'].invoke
-		end
+  namespace :transform do
+    desc "Dump the Transform schema."
+    task :dump => [:environment, :hack_in_ar] do
+      filename = ENV['SCHEMA'] || "#{Rails.root}/db/transform_schema.rb"
+      File.open(filename, 'w') do |f|
+        version = DataTransformation::Transformer::current_version rescue nil
+        f.puts "DataTransformation::Schema.define(:version => #{version})"
+      end
+      Rake::Task['undo_hack_in_ar'].invoke
+    end
 
-		desc "Load the Transform schema."
-		task :load => [:environment, :hack_in_ar] do
-			filename = ENV['SCHEMA'] || "#{Rails.root}/db/transform_schema.rb"
-			if File.exists?(filename)
-				load(filename)
-			else
-				abort %{#{filename} doesn't exist yet. Run 'rake db:transform' to create it and then try again.}
-			end
-		  Rake::Task['undo_hack_in_ar'].invoke
-		end
-	end
+    desc "Load the Transform schema."
+    task :load => [:environment, :hack_in_ar] do
+      filename = ENV['SCHEMA'] || "#{Rails.root}/db/transform_schema.rb"
+      if File.exists?(filename)
+        load(filename)
+      else
+        abort %{#{filename} doesn't exist yet. Run 'rake db:transform' to create it and then try again.}
+      end
+      Rake::Task['undo_hack_in_ar'].invoke
+    end
+  end
 end

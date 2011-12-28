@@ -1,36 +1,36 @@
 require 'active_record/migration'
 
 module DataTransformation
-	class Transformer < ActiveRecord::Migrator
-		class << self
-			def transform(transforms_path, target_version=nil)
-				migrate(transforms_path, target_version)
-			end	
+  class Transformer < ActiveRecord::Migrator
+    class << self
+      def transform(transforms_path, target_version=nil)
+        migrate(transforms_path, target_version)
+      end
 
-			def migrations_paths
-				@migrations_paths ||= ['db/transforms']
-				Array.wrap(@migrations_paths)
-			end		
-			
-			def migrations_path
-				migrations_paths.first
-			end
+      def migrations_paths
+        @migrations_paths ||= ['db/transforms']
+        Array.wrap(@migrations_paths)
+      end
 
-			def down
-				raise "Unimplemented as a Transformation"
-			end
+      def migrations_path
+        migrations_paths.first
+      end
 
-			def forward 
-				raise "Unimplemented as a Transformation"
-			end
+      def down
+        raise "Unimplemented as a Transformation"
+      end
 
-			def rollback
-				raise "Unimplemented as a Transformation"
-			end
+      def forward
+        raise "Unimplemented as a Transformation"
+      end
 
-			def schema_migrations_table_name
-				ActiveRecord::Base.table_name_prefix + "schema_transforms" + ActiveRecord::Base.table_name_suffix
-			end
-		end
-	end	
+      def rollback
+        raise "Unimplemented as a Transformation"
+      end
+
+      def schema_migrations_table_name
+        ActiveRecord::Base.table_name_prefix + "schema_transforms" + ActiveRecord::Base.table_name_suffix
+      end
+    end
+  end
 end
