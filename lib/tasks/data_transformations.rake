@@ -60,7 +60,7 @@ namespace :db do
       File.open(filename, 'w') do |f|
         version = DataTransformation::Transformer::current_version rescue nil
         path = DataTransformation::Transformer::migrations_path
-        f.puts "DataTransformation::Schema.define(:transforms_path => #{path}, :version => #{version})"
+        f.puts "DataTransformation::Schema.define(:transforms_path => \"#{path}\", :version => #{version})"
       end
       Rake::Task['undo_hack_in_ar'].invoke
     end
