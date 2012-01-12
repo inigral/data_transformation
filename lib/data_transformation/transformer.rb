@@ -16,6 +16,10 @@ module DataTransformation
         migrations_paths.first
       end
 
+      def migrations_path=(path)
+        @migrations_path = path
+      end
+
       def down
         raise "Unimplemented as a Transformation"
       end

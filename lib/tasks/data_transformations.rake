@@ -59,7 +59,8 @@ namespace :db do
       filename = ENV['SCHEMA'] || "#{Rails.root}/db/transform_schema.rb"
       File.open(filename, 'w') do |f|
         version = DataTransformation::Transformer::current_version rescue nil
-        f.puts "DataTransformation::Schema.define(:version => #{version})"
+        path = DataTransformation::Transformer::migrations_path
+        f.puts "DataTransformation::Schema.define(:transforms_path => #{path}, :version => #{version})"
       end
       Rake::Task['undo_hack_in_ar'].invoke
     end

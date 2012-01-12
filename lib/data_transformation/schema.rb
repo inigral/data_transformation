@@ -3,7 +3,7 @@ module DataTransformation
     def self.define(info={})
       unless info[:version].blank?
         initialize_schema_migrations_table
-        ActiveRecord::Base.connection.assume_migrated_upto_version(info[:version], DataTransformation::Transformer.migrations_path)
+        ActiveRecord::Base.connection.assume_migrated_upto_version(info[:version], info[:transforms_path])
       end
     end
   end
