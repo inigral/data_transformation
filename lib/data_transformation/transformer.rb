@@ -17,7 +17,7 @@ module DataTransformation
       end
 
       def migrations_path=(path)
-        @migrations_path = path
+        @migrations_paths = path
       end
 
       def down
