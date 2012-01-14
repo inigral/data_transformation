@@ -47,33 +47,37 @@ end
 
 namespace :db do
   desc "Transform the database (options: VERSION=x, VERBOSE=false)."
-  task :transform => [:environment, :hack_in_ar] do
+  task :transform => [:environment] do
+    Rake::Task["hack_in_ar"].execute
     DataTransformation::Transformation.verbose = ENV['VERBOSE'] ? ENV['VERBOSE'] == "true" : true
     DataTransformation::Transformer.transform('db/transforms/', ENV['VERSION'] ? ENV['VERSION'].to_i : nil)
-    Rake::Task["db:transform:dump"].invoke
+    Rake::Task['undo_hack_in_ar'].execute
+    Rake::Task["db:transform:dump"].execute
   end
 
   namespace :transform do
     desc "Dump the Transform schema."
-    task :dump => [:environment, :hack_in_ar] do
+    task :dump => [:environment] do
+      Rake::Task['hack_in_ar'].execute
       filename = ENV['SCHEMA'] || "#{Rails.root}/db/transform_schema.rb"
       File.open(filename, 'w') do |f|
         version = DataTransformation::Transformer::current_version rescue nil
         path = DataTransformation::Transformer::migrations_path
         f.puts "DataTransformation::Schema.define(:transforms_path => \"#{path}\", :version => #{version})"
       end
-      Rake::Task['undo_hack_in_ar'].invoke
+      Rake::Task['undo_hack_in_ar'].execute
     end
 
     desc "Load the Transform schema."
-    task :load => [:environment, :hack_in_ar] do
+    task :load => [:environment] do
+      Rake::Task['hack_in_ar'].execute
       filename = ENV['SCHEMA'] || "#{Rails.root}/db/transform_schema.rb"
       if File.exists?(filename)
         load(filename)
       else
         abort %{#{filename} doesn't exist yet. Run 'rake db:transform' to create it and then try again.}
       end
-      Rake::Task['undo_hack_in_ar'].invoke
+      Rake::Task['undo_hack_in_ar'].execute
     end
   end
 end
